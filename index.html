@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <title>Simulador VR — Bomba Centrífuga</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #0a0e1a;
+      overflow: hidden;
+      font-family: 'Segoe UI', system-ui, sans-serif;
+    }
+
+    #renderCanvas {
+      width: 100vw;
+      height: 100vh;
+      display: block;
+      touch-action: none;
+    }
+
+    /* ── Overlay de carregamento ── */
+    #loading-overlay {
+      position: fixed;
+      inset: 0;
+      background: #0a0e1a;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      z-index: 100;
+      gap: 24px;
+      transition: opacity 0.6s ease;
+    }
+
+    #loading-overlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .loading-logo {
+      font-size: 13px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      color: #00979d;
+      font-weight: 600;
+    }
+
+    .loading-title {
+      font-size: 28px;
+      font-weight: 300;
+      color: #e0e8f0;
+      letter-spacing: 1px;
+    }
+
+    .loading-bar-wrap {
+      width: 280px;
+      height: 2px;
+      background: rgba(255,255,255,0.08);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .loading-bar {
+      height: 100%;
+      background: linear-gradient(90deg, #00979d, #e8ab00);
+      border-radius: 2px;
+      width: 0%;
+      transition: width 0.3s ease;
+    }
+
+    .loading-status {
+      font-size: 12px;
+      color: #4a6080;
+      letter-spacing: 1px;
+    }
+
+    /* ── HUD de modo (2D, fora do VR) ── */
+    #mode-hud {
+      position: fixed;
+      bottom: 24px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      z-index: 50;
+      background: rgba(10, 14, 26, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(0,151,157,0.25);
+      border-radius: 40px;
+      padding: 8px;
+    }
+
+    .mode-btn {
+      padding: 8px 18px;
+      border-radius: 32px;
+      border: none;
+      cursor: pointer;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.8px;
+      text-transform: uppercase;
+      transition: all 0.2s;
+      background: transparent;
+      color: #4a6080;
+    }
+
+    .mode-btn:hover { color: #e0e8f0; }
+
+    .mode-btn.active {
+      background: linear-gradient(135deg, #00979d, #007a80);
+      color: #fff;
+      box-shadow: 0 2px 16px rgba(0,151,157,0.4);
+    }
+
+    /* ── Info panel ── */
+    #info-panel {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      width: 220px;
+      background: rgba(10, 14, 26, 0.85);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(0,151,157,0.2);
+      border-radius: 12px;
+      padding: 16px;
+      color: #e0e8f0;
+      font-size: 12px;
+      z-index: 50;
+      display: none;
+    }
+
+    #info-panel.visible { display: block; }
+    #info-panel h3 { color: #00979d; margin-bottom: 8px; font-size: 13px; }
+    #info-panel p { color: #8a9ab0; line-height: 1.5; }
+
+    /* ── XR Button override ── */
+    #xr-button-container {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 60;
+    }
+  </style>
+</head>
+<body>
+
+  <canvas id="renderCanvas"></canvas>
+
+  <div id="loading-overlay">
+    <div class="loading-logo">Mecatrônica · SENAI</div>
+    <div class="loading-title">Bomba Centrífuga — Simulador VR</div>
+    <div class="loading-bar-wrap">
+      <div class="loading-bar" id="loading-bar"></div>
+    </div>
+    <div class="loading-status" id="loading-status">Iniciando motor 3D...</div>
+  </div>
+
+  <div id="mode-hud">
+    <button class="mode-btn active" data-mode="visualizacao">👁 Visualizar</button>
+    <button class="mode-btn" data-mode="desmontagem">🔧 Desmontar</button>
+    <button class="mode-btn" data-mode="montagem_guiada">📋 Guiada</button>
+    <button class="mode-btn" data-mode="desafio">🏆 Desafio</button>
+  </div>
+
+  <div id="info-panel">
+    <h3 id="part-name">—</h3>
+    <p id="part-desc">Selecione uma peça para ver informações.</p>
+  </div>
+
+  <div id="xr-button-container"></div>
+
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>

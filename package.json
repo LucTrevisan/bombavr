@@ -1,0 +1,21 @@
+{
+  "name": "vr-bomba-centrifuga",
+  "version": "1.0.0",
+  "description": "Simulador VR de Bomba Centrífuga com Babylon.js + WebXR",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host",
+    "build": "vite build",
+    "preview": "vite preview --host"
+  },
+  "dependencies": {
+    "@babylonjs/core": "^7.0.0",
+    "@babylonjs/loaders": "^7.0.0",
+    "@babylonjs/materials": "^7.0.0",
+    "@babylonjs/gui": "^7.0.0",
+    "@babylonjs/inspector": "^7.0.0"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  }
+}
