@@ -1,6 +1,4 @@
-import { BottomBar } from '@babylonjs/inspector/components/actionTabs/tabs/propertyGrids/materials/textures/bottomBar'
 import { defineConfig } from 'vite'
-
 export default defineConfig({
   server: {
     base: '/bombavr/',
